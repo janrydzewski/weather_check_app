@@ -21,14 +21,18 @@ class _HomeScreenState extends State<HomeScreen> {
           child: BlocBuilder<WeatherBloc, WeatherState>(
             builder: (context, state) {
               if (state is WeatherLoading) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else {
                 return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
-                        alignment: Alignment.center,
-                        child: Text(state.weatherModel.latitude.toString())),
+                      alignment: Alignment.center,
+                      child: Text(
+                        state.weatherModel.latitude.toString(),
+                      ),
+                    ),
+                  
                   ],
                 );
               }
@@ -39,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             context.read<WeatherBloc>().add(GetWeatherEvent("Berlin"));
           },
-          child: Text("Press"),
+          child: const Text("Press"),
         ),
       ),
     );
