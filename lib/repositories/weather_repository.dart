@@ -12,9 +12,9 @@ class WeatherRepository {
     final cityModel = CityModel.fromJson(responseCity.data).results?.first;
 
     final weatherResponse = await dio.get(
-        "https://api.open-meteo.com/v1/forecast?latitude=${cityModel?.latitude}&longitude=${cityModel?.longitude}&hourly=temperature_2m,precipitation_probability,weathercode,pressure_msl,visibility,windspeed_10m&timezone=Europe%2FBerlin&forecast_days=3");
+        "https://api.open-meteo.com/v1/forecast?latitude=${cityModel?.latitude}&longitude=${cityModel?.longitude}&hourly=temperature_2m,precipitation_probability,weathercode,pressure_msl,visibility,windspeed_10m&timezone=Europe%2FBerlin&forecast_days=2");
     final weatherModel = WeatherModel.fromJson(weatherResponse.data);
-    print(weatherModel.latitude);
+    print(weatherResponse);
     return weatherModel;
   }
 }

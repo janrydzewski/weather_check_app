@@ -101,7 +101,7 @@ class Hourly {
   List<int>? precipitationProbability;
   List<int>? weathercode;
   List<double>? pressureMsl;
-  List<int>? visibility;
+  List<double>? visibility;
   List<double>? windspeed10m;
 
   Hourly(
@@ -119,7 +119,7 @@ class Hourly {
     precipitationProbability = json['precipitation_probability'].cast<int>();
     weathercode = json['weathercode'].cast<int>();
     pressureMsl = json['pressure_msl'].cast<double>();
-    visibility = json['visibility'].cast<int>();
+    visibility = json['visibility'].cast<double>();
     windspeed10m = json['windspeed_10m'].cast<double>();
   }
 
