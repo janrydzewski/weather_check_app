@@ -57,10 +57,13 @@ class SmoothLinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    final points = <Offset>[];
+
     final paint = Paint()
       ..color = ColorProvider.mainText
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
+
     final textPainter = TextPainter(
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.center,
@@ -69,8 +72,8 @@ class SmoothLinePainter extends CustomPainter {
     final path = Path();
 
     final yMin = temperatureValues.reduce(min);
-    final yMax = temperatureValues.reduce(max) + 8.0;
-    final yHeight = yMax - yMin + 8.0;
+    final yMax = temperatureValues.reduce(max) + 12.0;
+    final yHeight = yMax - yMin + 16.0;
     final xAxisStep = size.width / temperatureValues.length;
     var xValue = 0.0;
 
@@ -92,7 +95,8 @@ class SmoothLinePainter extends CustomPainter {
         path.cubicTo(
             controlPointX, yPrevious, controlPointX, yValue, xValue, yValue);
       }
-      xValue += xAxisStep;
+
+      points.add(Offset(xValue, yValue));
 
       textPainter.text = TextSpan(
         text: timeValue,
@@ -141,8 +145,23 @@ class SmoothLinePainter extends CustomPainter {
       );
       iconTextPainter.layout();
       iconTextPainter.paint(canvas, iconOffset);
+      xValue += xAxisStep;
     }
     canvas.drawPath(path, paint);
+
+    var paint1 = Paint()
+      ..color = ColorProvider.mainText
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 10;
+
+    var shadowPaint = Paint()
+      ..color = ColorProvider.mainText
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 14
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4.0);
+
+    canvas.drawPoints(PointMode.points, points, paint1);
+    canvas.drawPoints(PointMode.points, points, shadowPaint);
   }
 
   @override

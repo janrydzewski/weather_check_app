@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<WeatherBloc>().add(GetWeatherEvent("Warsaw"));
+    context.read<WeatherBloc>().add(GetWeatherEvent("Chicago"));
     super.initState();
   }
 
@@ -151,9 +151,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
+                      controller: ScrollController(
+                        initialScrollOffset: 800.w,
+                      ),
                       child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 45.w),
                         width: 3000.w,
-                        height: 150.h,
+                        height: 140.h,
                         child: CustomPaint(
                           painter: SmoothLinePainter(
                               state.weatherModel.hourly!.temperature2m!,
