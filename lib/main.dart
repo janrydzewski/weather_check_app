@@ -6,7 +6,6 @@ import 'package:weather_check/repositories/repositories.dart';
 import 'package:weather_check/ui/ui.dart';
 
 void main() async {
-  WeatherRepository().getWeather("Warsaw");
   runApp(const MyApp());
 }
 

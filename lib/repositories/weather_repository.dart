@@ -18,7 +18,7 @@ class WeatherRepository {
   }
 
   String getWeatherCode(int code, DateTime dateTime) {
-    if(dateTime.hour >= 22 || dateTime.hour <=6){
+    if (dateTime.hour >= 22 || dateTime.hour <= 6) {
       return "night";
     }
     switch (code) {

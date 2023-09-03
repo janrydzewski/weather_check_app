@@ -29,26 +29,25 @@ class WeatherModel {
     timezoneAbbreviation = json['timezone_abbreviation'];
     elevation = json['elevation'];
     hourlyUnits = json['hourly_units'] != null
-        ? new HourlyUnits.fromJson(json['hourly_units'])
+        ? HourlyUnits.fromJson(json['hourly_units'])
         : null;
-    hourly =
-        json['hourly'] != null ? new Hourly.fromJson(json['hourly']) : null;
+    hourly = json['hourly'] != null ? Hourly.fromJson(json['hourly']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['generationtime_ms'] = this.generationtimeMs;
-    data['utc_offset_seconds'] = this.utcOffsetSeconds;
-    data['timezone'] = this.timezone;
-    data['timezone_abbreviation'] = this.timezoneAbbreviation;
-    data['elevation'] = this.elevation;
-    if (this.hourlyUnits != null) {
-      data['hourly_units'] = this.hourlyUnits!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['generationtime_ms'] = generationtimeMs;
+    data['utc_offset_seconds'] = utcOffsetSeconds;
+    data['timezone'] = timezone;
+    data['timezone_abbreviation'] = timezoneAbbreviation;
+    data['elevation'] = elevation;
+    if (hourlyUnits != null) {
+      data['hourly_units'] = hourlyUnits!.toJson();
     }
-    if (this.hourly != null) {
-      data['hourly'] = this.hourly!.toJson();
+    if (hourly != null) {
+      data['hourly'] = hourly!.toJson();
     }
     return data;
   }
@@ -83,14 +82,14 @@ class HourlyUnits {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['time'] = this.time;
-    data['temperature_2m'] = this.temperature2m;
-    data['precipitation_probability'] = this.precipitationProbability;
-    data['weathercode'] = this.weathercode;
-    data['pressure_msl'] = this.pressureMsl;
-    data['relativehumidity_2m'] = this.relativehumidity2m;
-    data['windspeed_10m'] = this.windspeed10m;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['time'] = time;
+    data['temperature_2m'] = temperature2m;
+    data['precipitation_probability'] = precipitationProbability;
+    data['weathercode'] = weathercode;
+    data['pressure_msl'] = pressureMsl;
+    data['relativehumidity_2m'] = relativehumidity2m;
+    data['windspeed_10m'] = windspeed10m;
     return data;
   }
 }
@@ -124,14 +123,14 @@ class Hourly {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['time'] = this.time;
-    data['temperature_2m'] = this.temperature2m;
-    data['precipitation_probability'] = this.precipitationProbability;
-    data['weathercode'] = this.weathercode;
-    data['pressure_msl'] = this.pressureMsl;
-    data['relativehumidity_2m'] = this.relativehumidity2m;
-    data['windspeed_10m'] = this.windspeed10m;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['time'] = time;
+    data['temperature_2m'] = temperature2m;
+    data['precipitation_probability'] = precipitationProbability;
+    data['weathercode'] = weathercode;
+    data['pressure_msl'] = pressureMsl;
+    data['relativehumidity_2m'] = relativehumidity2m;
+    data['windspeed_10m'] = windspeed10m;
     return data;
   }
 }

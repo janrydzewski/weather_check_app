@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:weather_check/resources/common_use/common_use.dart';
 import 'package:weather_check/resources/resources.dart';
 
 reusableAppBarMainText(String text) {
@@ -98,10 +97,8 @@ class SmoothLinePainter extends CustomPainter {
             controlPointX, yPrevious, controlPointX, yValue, xValue, yValue);
       }
 
-
       final currentTime = dateTimeFormatString('H', dateTime);
       final currentDate = dateTimeFormatString('yyyy-MM-dd', dateTime);
-
 
       final time = "(${timeValues[i].substring(11, 13)})";
       final date = "(${timeValues[i].substring(0, 10)})";
@@ -177,7 +174,30 @@ class SmoothLinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter old) {
+  bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
   }
+}
+
+reusableSpecificInfo(String title, String mainText) {
+  return Column(
+    children: [
+      reusableSubText(title, FontWeight.w500),
+      SizedBox(
+        height: 5.h,
+      ),
+      reusableSubText(mainText, FontWeight.w700),
+    ],
+  );
+}
+
+reusableMainIcon(IconData iconData, Function() func) {
+  return GestureDetector(
+    onTap: func,
+    child: Icon(
+      iconData,
+      color: ColorProvider.mainText,
+      size: 30,
+    ),
+  );
 }

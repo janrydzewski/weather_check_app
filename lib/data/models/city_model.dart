@@ -8,18 +8,18 @@ class CityModel {
     if (json['results'] != null) {
       results = <Results>[];
       json['results'].forEach((v) {
-        results!.add(new Results.fromJson(v));
+        results!.add(Results.fromJson(v));
       });
     }
     generationtimeMs = json['generationtime_ms'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.results != null) {
-      data['results'] = this.results!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (results != null) {
+      data['results'] = results!.map((v) => v.toJson()).toList();
     }
-    data['generationtime_ms'] = this.generationtimeMs;
+    data['generationtime_ms'] = generationtimeMs;
     return data;
   }
 }
@@ -83,24 +83,24 @@ class Results {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['elevation'] = this.elevation;
-    data['feature_code'] = this.featureCode;
-    data['country_code'] = this.countryCode;
-    data['admin1_id'] = this.admin1Id;
-    data['admin2_id'] = this.admin2Id;
-    data['admin3_id'] = this.admin3Id;
-    data['timezone'] = this.timezone;
-    data['population'] = this.population;
-    data['country_id'] = this.countryId;
-    data['country'] = this.country;
-    data['admin1'] = this.admin1;
-    data['admin2'] = this.admin2;
-    data['admin3'] = this.admin3;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['elevation'] = elevation;
+    data['feature_code'] = featureCode;
+    data['country_code'] = countryCode;
+    data['admin1_id'] = admin1Id;
+    data['admin2_id'] = admin2Id;
+    data['admin3_id'] = admin3Id;
+    data['timezone'] = timezone;
+    data['population'] = population;
+    data['country_id'] = countryId;
+    data['country'] = country;
+    data['admin1'] = admin1;
+    data['admin2'] = admin2;
+    data['admin3'] = admin3;
     return data;
   }
 }
