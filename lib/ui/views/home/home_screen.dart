@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<WeatherBloc>().add(GetWeatherEvent("Bialystok"));
+    context.read<WeatherBloc>().add(const GetWeatherEvent("Berlin"));
     super.initState();
   }
 
@@ -25,15 +25,43 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       width: 375.w,
       height: 812.h,
-      child: Scaffold(
-        backgroundColor: ColorProvider.mainBackground,
-        body: SafeArea(
-          child: BlocBuilder<WeatherBloc, WeatherState>(
-            builder: (context, state) {
-              if (state is WeatherLoading || state.cityName == "") {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return Column(
+      child: BlocBuilder<WeatherBloc, WeatherState>(
+        builder: (context, state) {
+          if (state is WeatherLoading || state.cityName == "") {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    state.weatherCode == "cloud"
+                        ? ColorProvider.lightCloud
+                        : state.weatherCode == "night"
+                            ? ColorProvider.lightNight
+                            : state.weatherCode == "rain"
+                                ? ColorProvider.lightRain
+                                : state.weatherCode == "storm"
+                                    ? ColorProvider.lightStorm
+                                    : ColorProvider.lightSun,
+                    state.weatherCode == "cloud"
+                        ? ColorProvider.darkCloud
+                        : state.weatherCode == "night"
+                            ? ColorProvider.darkNight
+                            : state.weatherCode == "rain"
+                                ? ColorProvider.darkRain
+                                : state.weatherCode == "storm"
+                                    ? ColorProvider.darkStorm
+                                    : ColorProvider.darkSun,
+                  ],
+                ),
+              ),
+              child: SafeArea(
+                child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
@@ -81,12 +109,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Positioned(
                             top: 50.h,
-                            child: reusableMainText("17"),
+                            child: reusableMainText(
+                                "${state.weatherModel.hourly!.temperature2m![DateTime.now().toUtc().add(
+                                      Duration(
+                                          seconds: state
+                                              .weatherModel.utcOffsetSeconds!),
+                                    ).hour].round()}"),
                           ),
                           Positioned(
                             top: 140.h,
                             child: Image.asset(
-                              "assets/images/cloud.png",
+                              "assets/images/${state.weatherCode}.png",
                               scale: 1.5,
                             ),
                           ),
@@ -100,16 +133,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Column(
                             children: [
-                              reusableSubText("Visibility", FontWeight.w500),
+                              reusableSubText("Humidity", FontWeight.w500),
                               SizedBox(
                                 height: 5.h,
                               ),
                               reusableSubText(
-                                  "${((state.weatherModel.hourly!.visibility![DateTime.now().toUtc().add(
+                                  "${(state.weatherModel.hourly!.relativehumidity2m![DateTime.now().toUtc().add(
                                         Duration(
                                             seconds: state.weatherModel
                                                 .utcOffsetSeconds!),
-                                      ).hour]) / 1000)} km",
+                                      ).hour])} %",
                                   FontWeight.w700),
                             ],
                           ),
@@ -135,7 +168,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 5.h,
                               ),
                               reusableSubText(
-                                  "${(state.weatherModel.hourly!.windspeed10m![DateTime.now().hour])} km/h",
+                                  "${(state.weatherModel.hourly!.windspeed10m![DateTime.now().toUtc().add(
+                                        Duration(
+                                            seconds: state.weatherModel
+                                                .utcOffsetSeconds!),
+                                      ).hour])} km/h",
                                   FontWeight.w700),
                             ],
                           ),
@@ -146,7 +183,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 5.h,
                               ),
                               reusableSubText(
-                                  "${(state.weatherModel.hourly!.pressureMsl![DateTime.now().hour])} hPa",
+                                  "${(state.weatherModel.hourly!.pressureMsl![DateTime.now().toUtc().add(
+                                        Duration(
+                                            seconds: state.weatherModel
+                                                .utcOffsetSeconds!),
+                                      ).hour])} hPa",
                                   FontWeight.w700),
                             ],
                           ),
@@ -176,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             .w,
                       ),
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 45.w),
+                        margin: EdgeInsets.only(left: 40.w),
                         width: 3000.w,
                         height: 140.h,
                         child: CustomPaint(
@@ -190,11 +231,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ],
-                );
-              }
-            },
-          ),
-        ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

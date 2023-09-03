@@ -29,7 +29,7 @@ class WeatherModel {
     timezoneAbbreviation = json['timezone_abbreviation'];
     elevation = json['elevation'];
     hourlyUnits = json['hourly_units'] != null
-        ? HourlyUnits.fromJson(json['hourly_units'])
+        ? new HourlyUnits.fromJson(json['hourly_units'])
         : null;
     hourly =
         json['hourly'] != null ? new Hourly.fromJson(json['hourly']) : null;
@@ -60,7 +60,7 @@ class HourlyUnits {
   String? precipitationProbability;
   String? weathercode;
   String? pressureMsl;
-  String? visibility;
+  String? relativehumidity2m;
   String? windspeed10m;
 
   HourlyUnits(
@@ -69,7 +69,7 @@ class HourlyUnits {
       this.precipitationProbability,
       this.weathercode,
       this.pressureMsl,
-      this.visibility,
+      this.relativehumidity2m,
       this.windspeed10m});
 
   HourlyUnits.fromJson(Map<String, dynamic> json) {
@@ -78,7 +78,7 @@ class HourlyUnits {
     precipitationProbability = json['precipitation_probability'];
     weathercode = json['weathercode'];
     pressureMsl = json['pressure_msl'];
-    visibility = json['visibility'];
+    relativehumidity2m = json['relativehumidity_2m'];
     windspeed10m = json['windspeed_10m'];
   }
 
@@ -89,7 +89,7 @@ class HourlyUnits {
     data['precipitation_probability'] = this.precipitationProbability;
     data['weathercode'] = this.weathercode;
     data['pressure_msl'] = this.pressureMsl;
-    data['visibility'] = this.visibility;
+    data['relativehumidity_2m'] = this.relativehumidity2m;
     data['windspeed_10m'] = this.windspeed10m;
     return data;
   }
@@ -101,7 +101,7 @@ class Hourly {
   List<int>? precipitationProbability;
   List<int>? weathercode;
   List<double>? pressureMsl;
-  List<double>? visibility;
+  List<int>? relativehumidity2m;
   List<double>? windspeed10m;
 
   Hourly(
@@ -110,7 +110,7 @@ class Hourly {
       this.precipitationProbability,
       this.weathercode,
       this.pressureMsl,
-      this.visibility,
+      this.relativehumidity2m,
       this.windspeed10m});
 
   Hourly.fromJson(Map<String, dynamic> json) {
@@ -119,7 +119,7 @@ class Hourly {
     precipitationProbability = json['precipitation_probability'].cast<int>();
     weathercode = json['weathercode'].cast<int>();
     pressureMsl = json['pressure_msl'].cast<double>();
-    visibility = json['visibility'].cast<double>();
+    relativehumidity2m = json['relativehumidity_2m'].cast<int>();
     windspeed10m = json['windspeed_10m'].cast<double>();
   }
 
@@ -130,7 +130,7 @@ class Hourly {
     data['precipitation_probability'] = this.precipitationProbability;
     data['weathercode'] = this.weathercode;
     data['pressure_msl'] = this.pressureMsl;
-    data['visibility'] = this.visibility;
+    data['relativehumidity_2m'] = this.relativehumidity2m;
     data['windspeed_10m'] = this.windspeed10m;
     return data;
   }

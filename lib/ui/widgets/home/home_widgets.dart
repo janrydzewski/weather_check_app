@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_check/resources/common_use/common_use.dart';
 import 'package:weather_check/resources/resources.dart';
-import 'package:intl/intl.dart' as intl;
 
 reusableAppBarMainText(String text) {
   return Text(
@@ -65,7 +64,7 @@ class SmoothLinePainter extends CustomPainter {
     final paint = Paint()
       ..color = ColorProvider.mainText
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3;
+      ..strokeWidth = 5;
 
     final textPainter = TextPainter(
       textDirection: TextDirection.ltr,
@@ -124,10 +123,10 @@ class SmoothLinePainter extends CustomPainter {
         Offset(xValue - textPainter.width / 2, size.height - 15.0),
       );
 
-      final pointValue = temperatureValue.toStringAsFixed(2).substring(0, 2);
+      final pointValue = temperatureValue.toStringAsFixed(2).substring(0, 4);
 
       textPainter.text = TextSpan(
-          text: pointValue,
+          text: "${pointValue}°",
           style: const TextStyle(
               color: ColorProvider.mainText,
               fontSize: 18.0,

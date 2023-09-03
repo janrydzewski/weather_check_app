@@ -16,7 +16,9 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     emit(WeatherLoading());
     try{
       final weatherModel = await weatherRepository.getWeather(event.city);
-      emit(state.copyWith(weatherModel: weatherModel, cityName: event.city));
+      final dateTime = DateTime.now().toUtc().add(Duration(seconds: weatherModel.utcOffsetSeconds!),);
+      final weatherCode = weatherRepository.getWeatherCode(weatherModel.hourly!.weathercode![dateTime.hour], dateTime);
+      emit(state.copyWith(weatherModel: weatherModel, cityName: event.city, weatherCode: weatherCode));
     }
     catch(e){
       emit(WeatherError(message: "Error fetching data"));
