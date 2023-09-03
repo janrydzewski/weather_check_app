@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<WeatherBloc>().add(GetWeatherEvent("Chicago"));
+    context.read<WeatherBloc>().add(GetWeatherEvent("Bialystok"));
     super.initState();
   }
 
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: reusableAppBarMainText(state.cityName),
                           ),
                           Container(
-                            child: Icon(
+                            child: const Icon(
                               Icons.location_on_outlined,
                               color: ColorProvider.mainText,
                               size: 30,
@@ -65,11 +65,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       child: reusableAppBarSubText(
                         DateFormat('EEEE, dd MMMM').format(
-                          DateTime.now(),
+                          DateTime.now().toUtc().add(
+                                Duration(
+                                    seconds:
+                                        state.weatherModel.utcOffsetSeconds!),
+                              ),
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 375.w,
                       height: 420.h,
                       child: Stack(
@@ -89,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 375.w,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -101,7 +105,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 5.h,
                               ),
                               reusableSubText(
-                                  "${((state.weatherModel.hourly!.visibility![DateTime.now().hour]) / 1000)} km",
+                                  "${((state.weatherModel.hourly!.visibility![DateTime.now().toUtc().add(
+                                        Duration(
+                                            seconds: state.weatherModel
+                                                .utcOffsetSeconds!),
+                                      ).hour]) / 1000)} km",
                                   FontWeight.w700),
                             ],
                           ),
@@ -112,7 +120,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 5.h,
                               ),
                               reusableSubText(
-                                  "${(state.weatherModel.hourly!.precipitationProbability![DateTime.now().hour])} %",
+                                  "${(state.weatherModel.hourly!.precipitationProbability![DateTime.now().toUtc().add(
+                                        Duration(
+                                            seconds: state.weatherModel
+                                                .utcOffsetSeconds!),
+                                      ).hour])} %",
                                   FontWeight.w700),
                             ],
                           ),
@@ -152,7 +164,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       controller: ScrollController(
-                        initialScrollOffset: 800.w,
+                        initialScrollOffset: (1500 /
+                                24 *
+                                getInitHour(
+                                  DateTime.now().toUtc().add(
+                                        Duration(
+                                            seconds: state.weatherModel
+                                                .utcOffsetSeconds!),
+                                      ),
+                                ))
+                            .w,
                       ),
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 45.w),
@@ -161,7 +182,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: CustomPaint(
                           painter: SmoothLinePainter(
                               state.weatherModel.hourly!.temperature2m!,
-                              state.weatherModel.hourly!.time!),
+                              state.weatherModel.hourly!.time!,
+                              DateTime.now().toUtc().add(Duration(
+                                  seconds:
+                                      state.weatherModel.utcOffsetSeconds!))),
                         ),
                       ),
                     ),
@@ -173,5 +197,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  int getInitHour(DateTime dateTime) {
+    final hour = int.parse(DateFormat('H').format(dateTime));
+    return hour;
   }
 }

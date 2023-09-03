@@ -4,7 +4,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_check/resources/common_use/common_use.dart';
 import 'package:weather_check/resources/resources.dart';
+import 'package:intl/intl.dart' as intl;
 
 reusableAppBarMainText(String text) {
   return Text(
@@ -52,8 +54,9 @@ reusableSubText(String text, FontWeight fontWeight) {
 class SmoothLinePainter extends CustomPainter {
   final List<double> temperatureValues;
   final List<String> timeValues;
+  final DateTime dateTime;
 
-  SmoothLinePainter(this.temperatureValues, this.timeValues);
+  SmoothLinePainter(this.temperatureValues, this.timeValues, this.dateTime);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -62,7 +65,7 @@ class SmoothLinePainter extends CustomPainter {
     final paint = Paint()
       ..color = ColorProvider.mainText
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
+      ..strokeWidth = 3;
 
     final textPainter = TextPainter(
       textDirection: TextDirection.ltr,
@@ -96,7 +99,17 @@ class SmoothLinePainter extends CustomPainter {
             controlPointX, yPrevious, controlPointX, yValue, xValue, yValue);
       }
 
-      points.add(Offset(xValue, yValue));
+
+      final currentTime = dateTimeFormatString('H', dateTime);
+      final currentDate = dateTimeFormatString('yyyy-MM-dd', dateTime);
+
+
+      final time = "(${timeValues[i].substring(11, 13)})";
+      final date = "(${timeValues[i].substring(0, 10)})";
+
+      if (currentTime == time && currentDate == date) {
+        points.add(Offset(xValue, yValue));
+      }
 
       textPainter.text = TextSpan(
         text: timeValue,
@@ -152,13 +165,13 @@ class SmoothLinePainter extends CustomPainter {
     var paint1 = Paint()
       ..color = ColorProvider.mainText
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 10;
+      ..strokeWidth = 14;
 
     var shadowPaint = Paint()
       ..color = ColorProvider.mainText
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 14
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4.0);
+      ..strokeWidth = 30
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8.0);
 
     canvas.drawPoints(PointMode.points, points, paint1);
     canvas.drawPoints(PointMode.points, points, shadowPaint);

@@ -5,7 +5,7 @@ import 'package:weather_check/bloc/bloc.dart';
 import 'package:weather_check/repositories/repositories.dart';
 import 'package:weather_check/ui/ui.dart';
 
-void main() {
+void main() async {
   WeatherRepository().getWeather("Warsaw");
   runApp(const MyApp());
 }
