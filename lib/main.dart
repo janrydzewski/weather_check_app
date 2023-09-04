@@ -19,13 +19,16 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => const WeatherRepository(),
         ),
+        RepositoryProvider(
+          create: (context) => const LocationRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => WeatherBloc(
                 weatherRepository:
-                    RepositoryProvider.of<WeatherRepository>(context)),
+                    RepositoryProvider.of<WeatherRepository>(context), locationRepository: RepositoryProvider.of<LocationRepository>(context),),
           ),
         ],
         child: ScreenUtilInit(

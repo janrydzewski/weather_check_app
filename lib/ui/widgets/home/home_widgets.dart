@@ -1,17 +1,20 @@
 import 'dart:ui';
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_check/resources/resources.dart';
 
 reusableAppBarMainText(String text) {
-  return Text(
+  return AutoSizeText(
     text,
+    maxLines: 1,
+    maxFontSize: 34,
     style: GoogleFonts.archivoBlack(
       color: ColorProvider.mainText,
-      fontSize: 34.sp,
+      fontSize: 34,
     ),
   );
 }

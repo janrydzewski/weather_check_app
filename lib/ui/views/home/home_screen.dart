@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<WeatherBloc>().add(const GetWeatherEvent("Warsaw"));
+    context.read<WeatherBloc>().add(const GetWeatherEvent("Chicago"));
     super.initState();
   }
 
@@ -26,9 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BlocBuilder<WeatherBloc, WeatherState>(
         builder: (context, state) {
           if (state is WeatherLoading || state.cityName == "") {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return mainLoading();
           }
           return Scaffold(
             body: mainBackground(
@@ -37,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    mainRowWidget(state),
+                    mainRowWidget(state, context),
                     mainDateTimeWidget(state),
                     mainTemperatureWidget(state),
                     specificInfoRow(state),

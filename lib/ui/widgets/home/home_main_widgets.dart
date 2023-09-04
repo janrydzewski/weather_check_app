@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_check/bloc/bloc.dart';
 import 'package:weather_check/resources/resources.dart';
 import 'package:weather_check/ui/ui.dart';
+
+mainLoading() {
+  return Container(
+    color: ColorProvider.darkCloud,
+    child: const Center(
+      child: CircularProgressIndicator(
+        backgroundColor: ColorProvider.lightSun,
+      ),
+    ),
+  );
+}
 
 mainBackground(WeatherState state, Widget child) {
   return Container(
@@ -52,7 +64,7 @@ mainDateTimeWidget(WeatherState state) {
 mainTemperatureWidget(WeatherState state) {
   return SizedBox(
     width: 375.w,
-    height: 420.h,
+    height: 450.h,
     child: Stack(
       alignment: Alignment.center,
       children: [
@@ -75,17 +87,24 @@ mainTemperatureWidget(WeatherState state) {
   );
 }
 
-mainRowWidget(WeatherState state) {
+mainRowWidget(WeatherState state, BuildContext context) {
   return Container(
     margin: EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h, bottom: 5.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        reusableMainIcon(Icons.menu_outlined, () {}),
+        reusableMainIcon(Icons.menu_outlined, () {
+          context.read<WeatherBloc>().add(GetWeatherEvent("Tokyo"));
+        }),
         Container(
+          width: 215.w,
+          alignment: Alignment.center,
+          margin: EdgeInsets.symmetric(horizontal: 20.w),
           child: reusableAppBarMainText(state.cityName),
         ),
-        reusableMainIcon(Icons.location_on_outlined, () {}),
+        reusableMainIcon(Icons.location_on_outlined, () {
+          context.read<WeatherBloc>().add(const GetUserLocationEvent());
+        }),
       ],
     ),
   );
