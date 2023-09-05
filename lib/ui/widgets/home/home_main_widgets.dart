@@ -19,6 +19,7 @@ mainLoading() {
 
 mainBackground(WeatherState state, Widget child) {
   return Container(
+    height: 812.h,
     decoration: BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topCenter,
@@ -49,8 +50,13 @@ mainBackground(WeatherState state, Widget child) {
   );
 }
 
+mainRowWidget() {
+  return const MainTopBar();
+}
+
 mainDateTimeWidget(WeatherState state) {
-  return Container(
+  return SizedBox(
+    height: 20.h,
     child: reusableAppBarSubText(
       DateFormat('EEEE, dd MMMM').format(
         DateTime.now().toUtc().add(
@@ -82,29 +88,6 @@ mainTemperatureWidget(WeatherState state) {
             scale: 1.5,
           ),
         ),
-      ],
-    ),
-  );
-}
-
-mainRowWidget(WeatherState state, BuildContext context) {
-  return Container(
-    margin: EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h, bottom: 5.h),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        reusableMainIcon(Icons.menu_outlined, () {
-          context.read<WeatherBloc>().add(GetWeatherEvent("Tokyo"));
-        }),
-        Container(
-          width: 215.w,
-          alignment: Alignment.center,
-          margin: EdgeInsets.symmetric(horizontal: 20.w),
-          child: reusableAppBarMainText(state.cityName),
-        ),
-        reusableMainIcon(Icons.location_on_outlined, () {
-          context.read<WeatherBloc>().add(const GetUserLocationEvent());
-        }),
       ],
     ),
   );

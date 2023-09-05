@@ -32,16 +32,22 @@ class _HomeScreenState extends State<HomeScreen> {
             body: mainBackground(
               state,
               SafeArea(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    mainRowWidget(state, context),
-                    mainDateTimeWidget(state),
-                    mainTemperatureWidget(state),
-                    specificInfoRow(state),
-                    dividerWidget(),
-                    mainSliderWidget(state),
-                  ],
+                child: GestureDetector(
+                  onTap: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        mainRowWidget(),
+                        mainTemperatureWidget(state),
+                        specificInfoRow(state),
+                        dividerWidget(),
+                        mainSliderWidget(state),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

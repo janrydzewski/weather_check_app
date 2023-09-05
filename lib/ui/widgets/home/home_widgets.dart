@@ -3,9 +3,13 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_check/bloc/bloc.dart';
 import 'package:weather_check/resources/resources.dart';
+
+import 'home.dart';
 
 reusableAppBarMainText(String text) {
   return AutoSizeText(
@@ -200,7 +204,65 @@ reusableMainIcon(IconData iconData, Function() func) {
     child: Icon(
       iconData,
       color: ColorProvider.mainText,
-      size: 30,
+      size: 30.sp,
     ),
   );
+}
+
+class MainTopBar extends StatefulWidget {
+  const MainTopBar({super.key});
+
+  @override
+  State<MainTopBar> createState() => _MainTopBarState();
+}
+
+class _MainTopBarState extends State<MainTopBar> {
+
+  bool isSearching = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h, bottom: 5.h),
+      child: AnimatedCrossFade(
+        crossFadeState: !isSearching ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        duration: const Duration(milliseconds: 400),
+        firstChild: Column(
+          children: [
+            SizedBox(
+              width: 375.w,
+              height: 40.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  reusableMainIcon(Icons.location_on_outlined, () {
+                    context.read<WeatherBloc>().add(const GetUserLocationEvent());
+                  }),
+                  Container(
+                    width: 215.w,
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: reusableAppBarMainText(context.read<WeatherBloc>().state.cityName),
+                  ),
+                  reusableMainIcon(Icons.search_outlined, () {
+                    setState(() {
+                      isSearching = true;
+                    });
+                  }),
+                ],
+              ),
+            ),
+            mainDateTimeWidget(context.read<WeatherBloc>().state),
+
+          ],
+        ),
+        secondChild: SizedBox(
+          width: 375.w,
+          height: 60.h,
+          child: TextField(
+          ),
+        ),
+      ),
+    );
+  }
 }
