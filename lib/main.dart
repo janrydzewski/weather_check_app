@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weather_check/bloc/bloc.dart';
 import 'package:weather_check/repositories/repositories.dart';
-import 'package:weather_check/resources/common_use/common_use.dart';
 import 'package:weather_check/ui/ui.dart';
 
 import 'resources/resources.dart';
@@ -11,18 +10,7 @@ import 'resources/resources.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final cloud = await loadUiImage("assets/images/cloud.png");
-  final night = await loadUiImage("assets/images/night.png");
-  final rain = await loadUiImage("assets/images/rain.png");
-  final storm = await loadUiImage("assets/images/storm.png");
-  final sun = await loadUiImage("assets/images/sun.png");
-
-  WeatherIconSingleton.instance.cloud = cloud;
-  WeatherIconSingleton.instance.night = night;
-  WeatherIconSingleton.instance.rain = rain;
-  WeatherIconSingleton.instance.storm = storm;
-  WeatherIconSingleton.instance.sun = sun;
-
+  getAllImages();
   runApp(const MyApp());
 }
 

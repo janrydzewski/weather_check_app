@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'dart:ui' as UI;
 
 import 'package:flutter/services.dart';
+import 'package:weather_check/resources/resources.dart';
 
 String dateTimeFormatString(String format, DateTime dateTime) {
   return (
@@ -76,4 +77,20 @@ class DisableGlow extends ScrollBehavior {
       BuildContext context, Widget child, ScrollableDetails details) {
     return child;
   }
+}
+
+getAllImages() async {
+
+  final cloud = await loadUiImage("assets/images/cloud.png");
+  final night = await loadUiImage("assets/images/night.png");
+  final rain = await loadUiImage("assets/images/rain.png");
+  final storm = await loadUiImage("assets/images/storm.png");
+  final sun = await loadUiImage("assets/images/sun.png");
+
+  WeatherIconSingleton.instance.cloud = cloud;
+  WeatherIconSingleton.instance.night = night;
+  WeatherIconSingleton.instance.rain = rain;
+  WeatherIconSingleton.instance.storm = storm;
+  WeatherIconSingleton.instance.sun = sun;
+
 }
