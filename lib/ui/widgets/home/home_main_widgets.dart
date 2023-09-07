@@ -69,7 +69,7 @@ mainDateTimeWidget(WeatherState state) {
 mainTemperatureWidget(WeatherState state) {
   return SizedBox(
     width: 375.w,
-    height: 450.h,
+    height: 425.h,
     child: Stack(
       alignment: Alignment.center,
       children: [
@@ -129,7 +129,7 @@ specificInfoRow(WeatherState state) {
 
 dividerWidget() {
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: 35.w, vertical: 15.h),
+    margin: EdgeInsets.symmetric(horizontal: 35.w, vertical: 10.h),
     child: const Divider(
       color: ColorProvider.mainText,
       thickness: 2,
