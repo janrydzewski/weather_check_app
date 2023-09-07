@@ -1,4 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui' as UI;
+
+import 'package:flutter/services.dart';
 
 String dateTimeFormatString(String format, DateTime dateTime) {
   return (
@@ -52,5 +58,22 @@ String getWeatherCode(int code, int hour) {
       return "rain";
     default:
       return "cloud";
+  }
+}
+
+Future<UI.Image> loadUiImage(String imageAssetPath) async {
+  final ByteData data = await rootBundle.load(imageAssetPath);
+  final Completer<UI.Image> completer = Completer();
+  UI.decodeImageFromList(Uint8List.view(data.buffer), (UI.Image img) {
+    return completer.complete(img);
+  });
+  return completer.future;
+}
+
+class DisableGlow extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }

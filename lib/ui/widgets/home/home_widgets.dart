@@ -93,8 +93,8 @@ class SmoothLinePainter extends CustomPainter {
     final path = Path();
 
     final yMin = temperatureValues.reduce(min);
-    final yMax = temperatureValues.reduce(max) + 12.0;
-    final yHeight = yMax - yMin + 16.0;
+    final yMax = temperatureValues.reduce(max) + 4.0;
+    final yHeight = yMax - yMin + 6.0;
     final xAxisStep = size.width / temperatureValues.length;
     var xValue = 0.0;
 
@@ -129,9 +129,9 @@ class SmoothLinePainter extends CustomPainter {
 
       textPainter.text = TextSpan(
         text: timeValue,
-        style: const TextStyle(
+        style: GoogleFonts.archivo(
           color: ColorProvider.mainText,
-          fontSize: 12.0,
+          fontSize: 13.sp,
         ),
       );
       textPainter.layout();
@@ -143,64 +143,60 @@ class SmoothLinePainter extends CustomPainter {
       final pointValue = temperatureValue.toStringAsFixed(2).substring(0, 4);
 
       textPainter.text = TextSpan(
-          text: "${pointValue}°",
-          style: const TextStyle(
-              color: ColorProvider.mainText,
-              fontSize: 18.0,
-              fontWeight: FontWeight.w800));
+        text: "${pointValue}°",
+        style: GoogleFonts.archivo(
+          fontWeight: FontWeight.w700,
+          color: ColorProvider.mainText,
+          fontSize: 18.sp,
+        ),
+      );
+
       textPainter.layout();
       textPainter.paint(
         canvas,
         Offset(xValue - textPainter.width / 2, size.height - 40.0),
       );
 
-      final weatherCodeString = getWeatherCode(weathercode[i], i);
+      final myImage = getWeatherCode(weathercode[i], i % 24) == "cloud"
+          ? WeatherIconSingleton.instance.cloud
+          : getWeatherCode(weathercode[i], i % 24) == "night"
+              ? WeatherIconSingleton.instance.night
+              : getWeatherCode(weathercode[i], i % 24) == "rain"
+                  ? WeatherIconSingleton.instance.rain
+                  : getWeatherCode(weathercode[i], i % 24) == "storm"
+                      ? WeatherIconSingleton.instance.storm
+                      : WeatherIconSingleton.instance.sun;
 
-      IconData icon = weatherCodeString == "cloud"
-          ? AppIcons.cloud_sun
-          : weatherCodeString == "night"
-              ? AppIcons.cloud_moon
-              : weatherCodeString == "rain"
-                  ? AppIcons.rain
-                  : weatherCodeString == "storm"
-                      ? AppIcons.cloud_flash_alt
-                      : AppIcons.sun;
-      final iconOffset = Offset(xValue - 10, 0);
-      final iconCodePoint = icon.codePoint;
-      final iconFontFamily = icon.fontFamily;
-
-      final iconTextSpan = TextSpan(
-        text: String.fromCharCode(iconCodePoint),
-        style: TextStyle(
-          fontFamily: iconFontFamily,
-          fontSize: 20,
-          color: ColorProvider.mainText,
-        ),
+      final srcRect = Rect.fromPoints(
+        const Offset(0, 0),
+        Offset(myImage!.width.toDouble(), myImage.height.toDouble()),
       );
 
-      final iconTextPainter = TextPainter(
-        text: iconTextSpan,
-        textDirection: TextDirection.ltr,
+      final dstRect = Rect.fromPoints(
+        Offset(xValue - 15, 0),
+        Offset(xValue + 15, 30),
       );
-      iconTextPainter.layout();
-      iconTextPainter.paint(canvas, iconOffset);
+
+      canvas.drawImageRect(myImage, srcRect, dstRect, Paint());
+
       xValue += xAxisStep;
     }
+
     canvas.drawPath(path, paint);
 
-    var paint1 = Paint()
+    var dotPainter = Paint()
       ..color = ColorProvider.mainText
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 14;
 
-    var shadowPaint = Paint()
+    var shadowDotPainter = Paint()
       ..color = ColorProvider.mainText
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 30
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 8.0);
 
-    canvas.drawPoints(PointMode.points, points, paint1);
-    canvas.drawPoints(PointMode.points, points, shadowPaint);
+    canvas.drawPoints(PointMode.points, points, dotPainter);
+    canvas.drawPoints(PointMode.points, points, shadowDotPainter);
   }
 
   @override
