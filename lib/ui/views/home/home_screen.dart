@@ -14,8 +14,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<WeatherBloc>().add(const GetWeatherEvent("Chicago"));
     super.initState();
+    context.read<WeatherBloc>().add(const GetWeatherEvent("Chicago"));
   }
 
   @override
@@ -23,7 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       width: 375.w,
       height: 812.h,
-      child: BlocBuilder<WeatherBloc, WeatherState>(
+      child: BlocConsumer<WeatherBloc, WeatherState>(
+        listener: (context, state) {
+          if (state is WeatherError) {
+            context.read<WeatherBloc>().add(const GetWeatherEvent("Chicago"));
+            mainError(context, state, state.message);
+          }
+        },
         builder: (context, state) {
           if (state is WeatherLoading || state.cityName == "") {
             return mainLoading();

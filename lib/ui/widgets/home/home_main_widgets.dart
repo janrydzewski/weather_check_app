@@ -165,3 +165,56 @@ mainSliderWidget(WeatherState state) {
     ),
   );
 }
+
+mainError(BuildContext context, WeatherState state, String message) {
+  return Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => Scaffold(
+        body: mainBackground(
+          state,
+          SafeArea(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      vertical: 20.h, horizontal: 20.w),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 30.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 300.w,
+                        child: Image.asset("assets/images/storm.png"),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 50.h),
+                        alignment: Alignment.center,
+                        width: 375.w,
+                        child: reusableErrorText(message),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+}

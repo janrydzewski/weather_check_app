@@ -84,7 +84,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
           cityName: address[0].locality,
           weatherCode: weatherCode));
     } catch (e) {
-      emit(WeatherError(message: "Error fetching data"));
+      emit(WeatherError(message: "Error searching your location"));
     }
   }
 }

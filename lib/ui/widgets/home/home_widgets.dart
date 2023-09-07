@@ -56,6 +56,17 @@ reusableSubText(String text, FontWeight fontWeight) {
   );
 }
 
+reusableErrorText(String text) {
+  return Text(
+    text,
+    style: GoogleFonts.archivo(
+      fontWeight: FontWeight.w500,
+      color: ColorProvider.mainText,
+      fontSize: 24.sp,
+    ),
+  );
+}
+
 class SmoothLinePainter extends CustomPainter {
   final List<double> temperatureValues;
   final List<String> timeValues;
