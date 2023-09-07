@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:weather_check/data/models/models.dart';
 import 'package:weather_check/repositories/repositories.dart';
+import 'package:weather_check/resources/resources.dart';
 
 part 'weather_event.dart';
 
@@ -27,8 +28,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       final dateTime = DateTime.now().toUtc().add(
             Duration(seconds: weatherModel.utcOffsetSeconds!),
           );
-      final weatherCode = weatherRepository.getWeatherCode(
-          weatherModel.hourly!.weathercode![dateTime.hour], dateTime);
+      final weatherCode = getWeatherCode(
+          weatherModel.hourly!.weathercode![dateTime.hour], dateTime.hour);
 
       emit(state.copyWith(
           weatherModel: weatherModel,
@@ -51,8 +52,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       final dateTime = DateTime.now().toUtc().add(
             Duration(seconds: weatherModel.utcOffsetSeconds!),
           );
-      final weatherCode = weatherRepository.getWeatherCode(
-          weatherModel.hourly!.weathercode![dateTime.hour], dateTime);
+      final weatherCode = getWeatherCode(
+          weatherModel.hourly!.weathercode![dateTime.hour], dateTime.hour);
 
       emit(state.copyWith(
           weatherModel: weatherModel,
@@ -76,8 +77,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       final dateTime = DateTime.now().toUtc().add(
             Duration(seconds: weatherModel.utcOffsetSeconds!),
           );
-      final weatherCode = weatherRepository.getWeatherCode(
-          weatherModel.hourly!.weathercode![dateTime.hour], dateTime);
+      final weatherCode = getWeatherCode(
+          weatherModel.hourly!.weathercode![dateTime.hour], dateTime.hour);
 
       emit(state.copyWith(
           weatherModel: weatherModel,

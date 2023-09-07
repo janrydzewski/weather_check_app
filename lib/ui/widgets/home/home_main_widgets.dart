@@ -156,11 +156,13 @@ mainSliderWidget(WeatherState state) {
       height: 140.h,
       child: CustomPaint(
         painter: SmoothLinePainter(
-            state.weatherModel.hourly!.temperature2m!,
-            state.weatherModel.hourly!.time!,
-            DateTime.now()
-                .toUtc()
-                .add(Duration(seconds: state.weatherModel.utcOffsetSeconds!))),
+          state.weatherModel.hourly!.temperature2m!,
+          state.weatherModel.hourly!.time!,
+          DateTime.now().toUtc().add(
+                Duration(seconds: state.weatherModel.utcOffsetSeconds!),
+              ),
+          state.weatherModel.hourly!.weathercode!,
+        ),
       ),
     ),
   );
@@ -176,8 +178,8 @@ mainError(BuildContext context, WeatherState state, String message) {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: 20.h, horizontal: 20.w),
+                  margin:
+                      EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                   child: Row(
                     children: [
                       GestureDetector(
@@ -216,5 +218,4 @@ mainError(BuildContext context, WeatherState state, String message) {
       ),
     ),
   );
-
 }

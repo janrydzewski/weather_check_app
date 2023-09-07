@@ -70,9 +70,11 @@ reusableErrorText(String text) {
 class SmoothLinePainter extends CustomPainter {
   final List<double> temperatureValues;
   final List<String> timeValues;
+  final List<int> weathercode;
   final DateTime dateTime;
 
-  SmoothLinePainter(this.temperatureValues, this.timeValues, this.dateTime);
+  SmoothLinePainter(
+      this.temperatureValues, this.timeValues, this.dateTime, this.weathercode);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -152,7 +154,17 @@ class SmoothLinePainter extends CustomPainter {
         Offset(xValue - textPainter.width / 2, size.height - 40.0),
       );
 
-      final icon = Icons.favorite;
+      final weatherCodeString = getWeatherCode(weathercode[i], i);
+
+      IconData icon = weatherCodeString == "cloud"
+          ? AppIcons.cloud_sun
+          : weatherCodeString == "night"
+              ? AppIcons.cloud_moon
+              : weatherCodeString == "rain"
+                  ? AppIcons.rain
+                  : weatherCodeString == "storm"
+                      ? AppIcons.cloud_flash_alt
+                      : AppIcons.sun;
       final iconOffset = Offset(xValue - 10, 0);
       final iconCodePoint = icon.codePoint;
       final iconFontFamily = icon.fontFamily;
