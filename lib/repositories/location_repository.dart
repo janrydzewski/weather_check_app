@@ -1,7 +1,7 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationRepository {
-
   const LocationRepository();
 
   Future<bool> _handleLocationPermission() async {
@@ -38,4 +38,8 @@ class LocationRepository {
     return position;
   }
 
+  Future<Location?> getSearchingLocation(String address) async {
+    final location = await locationFromAddress(address);
+    return location[0];
+  }
 }

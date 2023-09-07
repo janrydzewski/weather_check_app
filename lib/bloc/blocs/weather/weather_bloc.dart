@@ -17,6 +17,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       : super(WeatherState()) {
     on<GetWeatherEvent>(_onGetWeatherEvent);
     on<GetUserLocationEvent>(_onGetUserLocationEvent);
+    on<SearchUserLocationEvent>(_onSearchUserLocationEvent);
   }
 
   _onGetWeatherEvent(GetWeatherEvent event, Emitter<WeatherState> emit) async {
@@ -44,7 +45,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     try {
       final userPosition = await locationRepository.getCurrentPosition();
       final address = await placemarkFromCoordinates(
-          userPosition!.latitude, userPosition!.longitude);
+          userPosition!.latitude, userPosition.longitude);
       final weatherModel =
           await weatherRepository.getWeather(address[0].locality!);
       final dateTime = DateTime.now().toUtc().add(
@@ -59,6 +60,31 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
           weatherCode: weatherCode));
     } catch (e) {
       emit(WeatherError(message: "Error getting user location"));
+    }
+  }
+
+  _onSearchUserLocationEvent(
+      SearchUserLocationEvent event, Emitter<WeatherState> emit) async {
+    emit(WeatherLoading());
+    try {
+      final inputLocation =
+          await locationRepository.getSearchingLocation(event.address);
+      final address = await placemarkFromCoordinates(
+          inputLocation!.latitude, inputLocation.longitude);
+      final weatherModel =
+          await weatherRepository.getWeather(address[0].locality!);
+      final dateTime = DateTime.now().toUtc().add(
+            Duration(seconds: weatherModel.utcOffsetSeconds!),
+          );
+      final weatherCode = weatherRepository.getWeatherCode(
+          weatherModel.hourly!.weathercode![dateTime.hour], dateTime);
+
+      emit(state.copyWith(
+          weatherModel: weatherModel,
+          cityName: address[0].locality,
+          weatherCode: weatherCode));
+    } catch (e) {
+      emit(WeatherError(message: "Error fetching data"));
     }
   }
 }

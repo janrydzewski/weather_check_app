@@ -217,15 +217,27 @@ class MainTopBar extends StatefulWidget {
 }
 
 class _MainTopBarState extends State<MainTopBar> {
-
   bool isSearching = false;
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final currentColor =
+        context.read<WeatherBloc>().state.weatherCode == "cloud"
+            ? ColorProvider.darkCloud
+            : context.read<WeatherBloc>().state.weatherCode == "night"
+                ? ColorProvider.darkNight
+                : context.read<WeatherBloc>().state.weatherCode == "rain"
+                    ? ColorProvider.darkRain
+                    : context.read<WeatherBloc>().state.weatherCode == "storm"
+                        ? ColorProvider.darkStorm
+                        : ColorProvider.darkSun;
+
     return Container(
       margin: EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h, bottom: 5.h),
       child: AnimatedCrossFade(
-        crossFadeState: !isSearching ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        crossFadeState:
+            !isSearching ? CrossFadeState.showFirst : CrossFadeState.showSecond,
         duration: const Duration(milliseconds: 400),
         firstChild: Column(
           children: [
@@ -236,13 +248,16 @@ class _MainTopBarState extends State<MainTopBar> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   reusableMainIcon(Icons.location_on_outlined, () {
-                    context.read<WeatherBloc>().add(const GetUserLocationEvent());
+                    context
+                        .read<WeatherBloc>()
+                        .add(const GetUserLocationEvent());
                   }),
                   Container(
                     width: 215.w,
                     alignment: Alignment.center,
                     margin: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: reusableAppBarMainText(context.read<WeatherBloc>().state.cityName),
+                    child: reusableAppBarMainText(
+                        context.read<WeatherBloc>().state.cityName),
                   ),
                   reusableMainIcon(Icons.search_outlined, () {
                     setState(() {
@@ -253,13 +268,46 @@ class _MainTopBarState extends State<MainTopBar> {
               ),
             ),
             mainDateTimeWidget(context.read<WeatherBloc>().state),
-
           ],
         ),
         secondChild: SizedBox(
           width: 375.w,
           height: 60.h,
           child: TextField(
+            controller: textEditingController,
+            style: GoogleFonts.archivo(
+              fontWeight: FontWeight.w500,
+              color: ColorProvider.mainText,
+              fontSize: 18.sp,
+            ),
+            decoration: InputDecoration(
+                hoverColor: currentColor,
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: currentColor,
+                  ),
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: currentColor,
+                  ),
+                ),
+                border: InputBorder.none,
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    context.read<WeatherBloc>().add(
+                        SearchUserLocationEvent(textEditingController.text));
+                    setState(() {
+                      isSearching = false;
+                    });
+                  },
+                  child: Icon(
+                    Icons.search_outlined,
+                    color: currentColor,
+                  ),
+                )),
           ),
         ),
       ),

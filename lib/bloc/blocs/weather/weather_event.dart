@@ -22,3 +22,11 @@ class GetUserLocationEvent extends WeatherEvent {
   @override
   List<Object> get props => [];
 }
+
+class SearchUserLocationEvent extends WeatherEvent {
+  final String address;
+  const SearchUserLocationEvent(this.address);
+
+  @override
+  List<Object> get props => [address];
+}
